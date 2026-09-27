@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta AI Automation Studio - License Admin Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090d16;
+            --card-bg: rgba(22, 30, 49, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            border-bottom: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            background: rgba(9, 13, 22, 0.85);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 18px 22px;
+            backdrop-filter: blur(8px);
+        }
+
+        .stat-card .label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .stat-card .val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* Main Split Section */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 980px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-group input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            width: 100%;
+            margin-top: 8px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            background: var(--warning);
+            color: black;
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Generated Key Alert Box */
+        .key-display-box {
+            margin-top: 18px;
+            padding: 14px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px dashed rgba(16, 185, 129, 0.4);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .key-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #34d399;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin: 8px 0;
+            user-select: all;
+        }
+
+        /* Table Toolbar */
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 12px 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .key-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.12);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .key-badge:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-active {
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+        }
+
+        .badge-expired {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fbbf24;
+        }
+
+        .badge-revoked {
+            background: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #111827;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 28px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .setup-banner {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">🔐</div>
+            <h2 style="margin-bottom: 6px; font-weight: 700;">Admin Access</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px;">Enter master password to
+                access license controls</p>
+            <input type="password" id="adminPinInput" class="form-input" placeholder="Default: admin123"
+                style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;" autofocus>
+            <button class="btn btn-primary" onclick="verifyAdminPin()" style="margin-top: 14px;">Unlock
+                Dashboard</button>
+            <p id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-top: 8px; display: none;">Invalid
+                password. Try 'admin123'</p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <span>Meta AI Studio &bull; License Manager</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="status-pill" id="fbStatusPill">
+                <span class="status-dot"></span>
+                <span id="fbStatusText">Firebase Connected</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="location.reload()">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Firestore Guide Notice (Dismissible) -->
+        <div class="setup-banner" id="setupBanner">
+            <div>
+                <strong>📌 Note for Firebase Setup:</strong> Ensure Cloud Firestore is enabled in your Firebase Console
+                (<a href="https://console.firebase.google.com/project/meta-project-7bd88/firestore" target="_blank"
+                    style="color: #60a5fa; text-decoration: underline;">Click Here</a>) with rules:
+                <code>allow read, write: if true;</code>
+            </div>
+            <button class="btn btn-secondary btn-sm"
+                onclick="document.getElementById('setupBanner').style.display='none'">✕ Dismiss</button>
+        </div>
+
+        <!-- Stats Row -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Total License Keys</div>
+                <div class="val" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Active Licenses</div>
+                <div class="val" id="statActive" style="color: var(--success);">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Expired Licenses</div>
+                <div class="val" id="statExpired" style="color: var(--warning);">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Revoked / Blocked</div>
+                <div class="val" id="statRevoked" style="color: var(--danger);">0</div>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT: Key Generator Form -->
+            <section class="card">
+                <h3 class="card-title">🔑 Generate New Key</h3>
+
+                <div class="form-group">
+                    <label class="form-label">👑 Admin Prefix (Name Tag)</label>
+                    <select id="prefixSelect" class="form-select" onchange="toggleCustomPrefix()">
+                        <option value="ratan_vai--" selected>ratan_vai-- (Ratan Vai)</option>
+                        <option value="yeasin_vai--">yeasin_vai-- (Yeasin Vai)</option>
+                        <option value="admin--">admin-- (General Admin)</option>
+                        <option value="custom">✏️ Custom Prefix...</option>
+                        <option value="">None (Standard META-XXXX)</option>
+                    </select>
+                    <input type="text" id="customPrefixInput" class="form-input" style="display:none; margin-top:8px;" placeholder="e.g. boss_ratan--">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Client / User Name</label>
+                    <input type="text" id="clientNameInput" class="form-input"
+                        placeholder="e.g. John Doe / Customer #1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Validity Duration (Time Setup)</label>
+                    <select id="durationSelect" class="form-select" onchange="toggleCustomDuration()">
+                        <option value="1">1 Day (24 Hours - Trial)</option>
+                        <option value="3">3 Days</option>
+                        <option value="7">7 Days (1 Week)</option>
+                        <option value="15">15 Days</option>
+                        <option value="30" selected>30 Days (1 Month)</option>
+                        <option value="60">60 Days (2 Months)</option>
+                        <option value="90">90 Days (3 Months)</option>
+                        <option value="180">180 Days (6 Months)</option>
+                        <option value="365">365 Days (1 Year)</option>
+                        <option value="custom">⏱️ Custom Days / Hours...</option>
+                        <option value="-1">♾️ Lifetime (No Expiry)</option>
+                    </select>
+                    <div id="customDurationBox" style="display:none; margin-top:8px;">
+                        <input type="number" id="customDaysInput" class="form-input" placeholder="Number of days (e.g. 45)" min="1" value="45">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hardware Lock (HWID)</label>
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="hwidLockCheck" checked>
+                        <span style="font-weight: 600; color: var(--accent-light);">🔒 Lock to 1st Activated Computer
+                            (Strict 1-PC HWID Lock)</span>
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" id="btnGenKey" onclick="handleGenerateKey()">
+                    ⚡ Generate & Activate Key
+                </button>
+
+                <!-- Success display box -->
+                <div class="key-display-box" id="keyDisplayBox">
+                    <div style="font-size: 0.8rem; color: var(--success); font-weight: 600;">✅ Key Generated
+                        Successfully!</div>
+                    <div class="key-code" id="displayKeyCode">META-XXXX-XXXX-XXXX</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-success btn-sm" style="flex: 1;" onclick="copyGeneratedKey()">📋 Copy
+                            Key</button>
+                        <button class="btn btn-secondary btn-sm"
+                            onclick="document.getElementById('keyDisplayBox').style.display='none'">✕ Close</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT: License Table -->
+            <section class="card">
+                <div class="table-toolbar">
+                    <h3 class="card-title" style="margin-bottom: 0;">📜 Active & Issued Licenses</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" class="form-input"
+                            placeholder="🔍 Search by client name or key..." oninput="renderTable()">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>License Key</th>
+                                <th>Client Name</th>
+                                <th>Duration / Expiry</th>
+                                <th>Status</th>
+                                <th>Bound HWID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="licenseTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading licenses from Firebase...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Firebase Scripts (v10 Modular SDK) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            setDoc,
+            getDocs,
+            deleteDoc,
+            updateDoc,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // User's exact Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCILFKE2bblpsGH6fLEJViHao2n98h7CA",
+            authDomain: "meta-project-7bd88.firebaseapp.com",
+            projectId: "meta-project-7bd88",
+            storageBucket: "meta-project-7bd88.firebasestorage.app",
+            messagingSenderId: "45731693003",
+            appId: "1:45731693003:web:99cb451615e2fe522fb64e",
+            measurementId: "G-CJ6PKHJ7JE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.allLicenses = [];
+
+        // Pin check
+        window.verifyAdminPin = function () {
+            const pin = document.getElementById("adminPinInput").value.trim();
+            if (pin === "admin123" || pin === (localStorage.getItem("admin_pin") || "admin123")) {
+                document.getElementById("loginModal").style.display = "none";
+                loadLicensesRealtime();
+            } else {
+                document.getElementById("loginError").style.display = "block";
+            }
+        };
+
+        // Listen on enter key
+        document.getElementById("adminPinInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") verifyAdminPin();
+        });
+
+        // Real-time listener for Firestore collection "licenses"
+        function loadLicensesRealtime() {
+            try {
+                const colRef = collection(db, "licenses");
+                onSnapshot(colRef, (snapshot) => {
+                    window.allLicenses = [];
+                    snapshot.forEach((docSnap) => {
+                        window.allLicenses.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    renderTable();
+                    updateStats();
+                }, (error) => {
+                    console.error("Firestore listener error:", error);
+                    document.getElementById("fbStatusPill").style.background = "rgba(239, 68, 68, 0.15)";
+                    document.getElementById("fbStatusPill").style.color = "var(--danger)";
+                    document.getElementById("fbStatusText").textContent = "Firestore Error (Check Console)";
+                    document.getElementById("licenseTableBody").innerHTML = `
+            <tr>
+              <td colspan="6" class="empty-state" style="color: var(--danger);">
+                ⚠️ Cloud Firestore API is not enabled yet in Firebase Console.<br>
+                <a href="https://console.firebase.google.com/project/meta-project-7bd88/firestore" target="_blank" style="color: #60a5fa; text-decoration: underline;">
+                  Click here to open Firebase Console and click 'Create database'
+                </a>.
+              </td>
+            </tr>
+          `;
+                });
+            } catch (e) {
+                console.error("Firebase init error:", e);
+            }
+        }
+
+        window.toggleCustomPrefix = function () {
+            const sel = document.getElementById("prefixSelect").value;
+            const input = document.getElementById("customPrefixInput");
+            input.style.display = sel === "custom" ? "block" : "none";
+            if (sel === "custom") input.focus();
+        };
+
+        window.toggleCustomDuration = function () {
+            const sel = document.getElementById("durationSelect").value;
+            const box = document.getElementById("customDurationBox");
+            box.style.display = sel === "custom" ? "block" : "none";
+        };
+
+        function showToast(msg) {
+            let container = document.getElementById("toastContainer");
+            if (!container) {
+                container = document.createElement("div");
+                container.id = "toastContainer";
+                container.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px;";
+                document.body.appendChild(container);
+            }
+            const t = document.createElement("div");
+            t.style.cssText = "background: #0f172a; border: 1px solid #38bdf8; color: #f8fafc; padding: 12px 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;";
+            t.innerHTML = msg;
+            container.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = "0";
+                t.style.transition = "opacity 0.4s";
+                setTimeout(() => t.remove(), 400);
+            }, 3000);
+        }
+
+        // Key Generator logic with admin prefix support
+        function generateLicenseCode() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+            
+            let prefix = document.getElementById("prefixSelect").value;
+            if (prefix === "custom") {
+                prefix = document.getElementById("customPrefixInput").value.trim();
+                if (prefix && !prefix.endsWith("--") && !prefix.endsWith("-")) {
+                    prefix += "--";
+                }
+            }
+            const cleanPrefix = (prefix || "").toUpperCase();
+            return `${cleanPrefix}META-${seg()}-${seg()}`;
+        }
+
+        window.handleGenerateKey = async function () {
+            const clientName = document.getElementById("clientNameInput").value.trim() || "Valued Client";
+            let durationDays = 30;
+            const durVal = document.getElementById("durationSelect").value;
+            if (durVal === "custom") {
+                durationDays = parseFloat(document.getElementById("customDaysInput").value) || 30;
+            } else {
+                durationDays = parseFloat(durVal);
+            }
+            const isHwidLock = document.getElementById("hwidLockCheck").checked;
+
+            const btn = document.getElementById("btnGenKey");
+            btn.disabled = true;
+            btn.textContent = "⏳ Creating Key...";
+
+            const keyCode = generateLicenseCode();
+            const now = Date.now();
+            let expiresAt = 0; // 0 means lifetime
+
+            if (durationDays > 0) {
+                expiresAt = now + (durationDays * 24 * 60 * 60 * 1000);
+            }
+
+            const newLicense = {
+                key: keyCode,
+                client_name: clientName,
+                duration_days: durationDays,
+                created_at: now,
+                expires_at: expiresAt,
+                status: "active", // "active", "revoked"
+                device_lock: isHwidLock,
+                bound_hwid: "" // Empty until activated on client PC
+            };
+
+            try {
+                await setDoc(doc(db, "licenses", keyCode), newLicense);
+
+                // Show in success box
+                document.getElementById("displayKeyCode").textContent = keyCode;
+                document.getElementById("keyDisplayBox").style.display = "block";
+                document.getElementById("clientNameInput").value = "";
+                showToast(`🎉 License Key Created: <code>${keyCode}</code>`);
+            } catch (err) {
+                alert("Error saving key to Firebase:\n" + err.message + "\n\nMake sure Firestore Database is created in Firebase Console!");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "⚡ Generate & Activate Key";
+            }
+        };
+
+        window.copyGeneratedKey = function () {
+            const text = document.getElementById("displayKeyCode").textContent;
+            navigator.clipboard.writeText(text);
+            showToast(`📋 Copied generated key to clipboard:<br><code>${text}</code>`);
+        };
+
+        window.copyTableKey = function (key) {
+            navigator.clipboard.writeText(key);
+            showToast(`📋 Copied license key:<br><code>${key}</code>`);
+        };
+
+        // Actions: Revoke / Unblock
+        window.toggleRevoke = async function (keyId, currentStatus) {
+            const newStatus = currentStatus === "active" ? "revoked" : "active";
+            if (!confirm(`Are you sure you want to ${newStatus === "revoked" ? "BLOCK / REVOKE" : "ACTIVATE"} this license key?`)) return;
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { status: newStatus });
+                showToast(`Updated status for: ${keyId}`);
+            } catch (e) {
+                alert("Error updating status: " + e.message);
+            }
+        };
+
+        // Action: Reset HWID
+        window.resetHwid = async function (keyId) {
+            if (!confirm(`Are you sure you want to UNBIND/RESET the device HWID for:\n${keyId}?\n\nThis will allow the client to activate on a new computer!`)) return;
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { bound_hwid: "" });
+                showToast(`🔓 Device HWID reset successfully for: ${keyId}`);
+            } catch (e) {
+                alert("Error resetting HWID: " + e.message);
+            }
+        };
+
+        // Action: Extend Duration (+7 Days or +30 Days)
+        window.extendLicense = async function (keyId, daysToAdd) {
+            const lic = window.allLicenses.find(l => l.id === keyId);
+            if (!lic) return;
+            const base = lic.expires_at > Date.now() ? lic.expires_at : Date.now();
+            const newExpiry = base + (daysToAdd * 24 * 60 * 60 * 1000);
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { expires_at: newExpiry, status: "active" });
+                alert(`Extended key by +${daysToAdd} days!`);
+            } catch (e) {
+                alert("Error extending key: " + e.message);
+            }
+        };
+
+        // Action: Delete Key
+        window.deleteLicense = async function (keyId) {
+            if (!confirm(`Permanently DELETE license key ${keyId}?\nThis action cannot be undone.`)) return;
+            try {
+                await deleteDoc(doc(db, "licenses", keyId));
+            } catch (e) {
+                alert("Error deleting key: " + e.message);
+            }
+        };
+
+        // Render Table
+        window.renderTable = function () {
+            const search = (document.getElementById("searchInput").value || "").toLowerCase();
+            const tbody = document.getElementById("licenseTableBody");
+
+            const filtered = window.allLicenses.filter(lic => {
+                return (
+                    (lic.key || "").toLowerCase().includes(search) ||
+                    (lic.client_name || "").toLowerCase().includes(search) ||
+                    (lic.status || "").toLowerCase().includes(search)
+                );
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No license keys found. Generate one on the left!</td></tr>`;
+                return;
+            }
+
+            const now = Date.now();
+            tbody.innerHTML = filtered.map(lic => {
+                // Compute status
+                let isExpired = lic.expires_at > 0 && now > lic.expires_at;
+                let statusBadge = `<span class="badge badge-active">Active</span>`;
+                if (lic.status === "revoked") {
+                    statusBadge = `<span class="badge badge-revoked">Revoked / Blocked</span>`;
+                } else if (isExpired) {
+                    statusBadge = `<span class="badge badge-expired">Expired</span>`;
+                }
+
+                // Compute expiry string
+                let expiryStr = "Lifetime";
+                if (lic.expires_at > 0) {
+                    const diffMs = lic.expires_at - now;
+                    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                    const expDate = new Date(lic.expires_at).toLocaleDateString();
+                    if (diffDays > 0) {
+                        expiryStr = `${expDate} (${diffDays} day${diffDays > 1 ? 's' : ''} left)`;
+                    } else {
+                        expiryStr = `${expDate} (Expired)`;
+                    }
+                }
+
+                const hwidDisplay = lic.bound_hwid ?
+                    `<div style="display:inline-flex; align-items:center; gap:6px;">
+                        <span title="${lic.bound_hwid}" style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; color:#38bdf8; border:1px solid rgba(56,189,248,0.2);">${lic.bound_hwid.substring(0, 8)}...</span>
+                        <button class="btn btn-warning btn-sm" onclick="resetHwid('${lic.id}')" title="Reset HWID to allow activating on another PC" style="padding:2px 8px; font-size:0.75rem; font-weight:700;">🔄 Reset HWID</button>
+                    </div>` :
+                    `<span style="color: var(--text-muted); font-style: italic; font-size:0.8rem;">🔓 Unbound (Ready for any PC)</span>`;
+
+                return `
+          <tr>
+            <td>
+              <div style="display:inline-flex; align-items:center; gap:6px;">
+                <span class="key-badge" onclick="copyTableKey('${lic.key}')" title="Click to copy key">${lic.key}</span>
+                <button class="btn btn-secondary btn-sm" onclick="copyTableKey('${lic.key}')" title="Copy Key" style="padding:2px 7px; font-size:0.8rem;">📋</button>
+              </div>
+            </td>
+            <td><strong>${lic.client_name || "N/A"}</strong></td>
+            <td>${expiryStr}</td>
+            <td>${statusBadge}</td>
+            <td>${hwidDisplay}</td>
+            <td>
+              <div class="action-group">
+                <button class="btn ${lic.status === 'active' ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleRevoke('${lic.id}', '${lic.status}')">
+                  ${lic.status === 'active' ? '🚫 Block' : '🟢 Unblock'}
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="extendLicense('${lic.id}', 30)">+30d</button>
+                <button class="btn btn-secondary btn-sm" onclick="deleteLicense('${lic.id}')" style="color: var(--danger);">🗑</button>
+              </div>
+            </td>
+          </tr>
+        `;
+            }).join("");
+        };
+
+        function updateStats() {
+            const now = Date.now();
+            let active = 0, expired = 0, revoked = 0;
+            window.allLicenses.forEach(l => {
+                if (l.status === "revoked") revoked++;
+                else if (l.expires_at > 0 && now > l.expires_at) expired++;
+                else active++;
+            });
+            document.getElementById("statTotal").textContent = window.allLicenses.length;
+            document.getElementById("statActive").textContent = active;
+            document.getElementById("statExpired").textContent = expired;
+            document.getElementById("statRevoked").textContent = revoked;
+        }
+
+    </script>
+</body>
+
+</html>
