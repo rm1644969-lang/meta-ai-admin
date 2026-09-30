@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Meta AI Automation Studio - License Admin Panel</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#070b14">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meta Admin">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icon-96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- Open Graph (OG) / Social Sharing (WhatsApp, Facebook, Twitter, Telegram) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Meta AI Automation Studio - License Admin Panel">
+    <meta property="og:description" content="Cloud License & HWID Security Admin Control Center - Instant Activation & Management">
+    <meta property="og:image" content="og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Meta AI Admin Panel">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Meta AI Automation Studio - License Admin Panel">
+    <meta name="twitter:description" content="Cloud License & HWID Security Admin Control Center">
+    <meta name="twitter:image" content="og-image.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #070b14;
+            --surface: #0e1526;
+            --surface-card: rgba(17, 24, 43, 0.75);
+            --surface-hover: rgba(26, 38, 68, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(59, 130, 246, 0.28);
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.45);
+            --primary-hover: #2563eb;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.35);
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-sub: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(ellipse 60% 40% at 15% 10%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 35% at 85% 85%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+            background-attachment: fixed;
+            padding-bottom: 70px;
+            overflow-x: hidden;
+        }
+
+        /* Top Notification Bar / Offline Warning */
+        #offlineNotice {
+            display: none;
+            background: linear-gradient(90deg, #b91c1c, #dc2626);
+            color: white;
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 6px;
+            font-weight: 600;
+        }
+
+        /* Glass Header */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 32px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(7, 11, 20, 0.85);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 0 20px var(--primary-glow);
+            position: relative;
+        }
+
+        .brand-text h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text p {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* PWA Install Button */
+        .btn-pwa-install {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 15px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.4);
+            animation: pulse-border 2.5s infinite;
+            transition: all 0.2s;
+        }
+
+        .btn-pwa-install:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 24px rgba(6, 182, 212, 0.6);
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 12px rgba(6, 182, 212, 0.35); }
+            50% { box-shadow: 0 0 24px rgba(59, 130, 246, 0.7); }
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 28px auto 0;
+            padding: 0 24px;
+        }
+
+        /* PWA Banner if in browser */
+        .pwa-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(14, 21, 38, 0.95), rgba(26, 38, 68, 0.9));
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            border-radius: 14px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .pwa-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .pwa-banner-icon {
+            font-size: 1.8rem;
+        }
+
+        .pwa-banner-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .pwa-banner-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Stats Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 22px;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-glow);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--card-accent, var(--primary)), transparent);
+            opacity: 0.8;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .stat-icon {
+            font-size: 1.1rem;
+            opacity: 0.85;
+        }
+
+        .stat-card .val {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .stat-subtext {
+            font-size: 0.74rem;
+            color: var(--text-sub);
+            margin-top: 6px;
+        }
+
+        /* Main Workspace Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1080px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-weight: 600;
+        }
+
+        /* Form Components */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(10, 16, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+            background: rgba(12, 20, 38, 0.95);
+        }
+
+        /* Preset duration pills */
+        .duration-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .dur-chip {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .dur-chip:hover, .dur-chip.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--primary);
+            color: #93c5fd;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 12px 14px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .checkbox-container:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .checkbox-container input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            width: 100%;
+            box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4);
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.55);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            border-radius: 7px;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            background: var(--warning);
+            color: #0f172a;
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Generated Key Card */
+        .key-display-box {
+            margin-top: 18px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.08));
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .key-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #34d399;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+            user-select: all;
+            border: 1px dashed rgba(52, 211, 153, 0.4);
+            letter-spacing: 1px;
+            word-break: break-all;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+
+        .filter-tab {
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .filter-tab:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-tab.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--primary);
+            color: #60a5fa;
+        }
+
+        .tab-badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1px 6px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+        }
+
+        /* Table Toolbar */
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            background: rgba(10, 16, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(10, 16, 30, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.84rem;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 12px 16px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
+        }
+
+        tr {
+            transition: background 0.15s;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .key-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.12);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .key-badge:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #60a5fa;
+            color: white;
+        }
+
+        .badge {
+            padding: 4px 9px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-active {
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-expired {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-revoked {
+            background: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal {
+            background: #0d1424;
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            position: relative;
+            animation: zoomIn 0.25s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-sub);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Offline Indicator -->
+    <div id="offlineNotice">⚠️ You are currently offline. Local cache active.</div>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal">
+            <div style="position: relative; width: 84px; height: 84px; margin: 0 auto 14px;">
+                <img src="avatar.png" alt="Admin Master" style="width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2.5px solid #3b82f6; box-shadow: 0 0 24px rgba(59, 130, 246, 0.55); background: #0e1526;">
+                <span style="position: absolute; bottom: 2px; right: 4px; width: 14px; height: 14px; background: #10b981; border: 2px solid #0d1424; border-radius: 50%;" title="Admin Active"></span>
+            </div>
+            <h2 style="margin-bottom: 6px; font-weight: 800; font-size: 1.35rem; color: #f8fafc;">Admin Authorization</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                Enter Master Security PIN to manage licensing & HWID locks
+            </p>
+            <input type="password" id="adminPinInput" class="form-input" placeholder="Default: admin123"
+                style="text-align: center; font-size: 1.25rem; letter-spacing: 4px; font-family: 'JetBrains Mono', monospace;" autofocus>
+            <button class="btn btn-primary" onclick="verifyAdminPin()" style="margin-top: 16px; padding: 13px;">
+                ⚡ Unlock Control Center
+            </button>
+            <p id="loginError" style="color: var(--danger); font-size: 0.82rem; margin-top: 10px; display: none;">
+                ❌ Invalid security PIN. (Default: <code>admin123</code>)
+            </p>
+        </div>
+    </div>
+
+    <!-- PWA Install Guide Modal -->
+    <div id="pwaHelpModal" class="modal-overlay" style="display: none;">
+        <div class="modal" style="max-width: 500px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.15rem; font-weight: 700;">📲 How to Install as App (PWA)</h3>
+                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('pwaHelpModal').style.display='none'">✕</button>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: flex; flex-direction: column; gap: 12px;">
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                    <strong style="color: #60a5fa;">💻 In Google Chrome (PC / Laptop):</strong><br>
+                    1. Click the <strong>"📲 Install App"</strong> button at the top navbar.<br>
+                    2. Or look at Chrome's address bar on the right side for the <strong>Install Icon (⊕ or 💻)</strong>.<br>
+                    3. Click <strong>"Install"</strong> — it will open in its own separate desktop window with taskbar icon!
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                    <strong style="color: #34d399;">📱 In Mobile (Android / Chrome):</strong><br>
+                    Tap Chrome's 3-dots menu (⋮) &rarr; Select <strong>"Install App"</strong> or <strong>"Add to Home screen"</strong>.
+                </div>
+                <div style="background: rgba(59,130,246,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.25); font-size: 0.8rem; color: #93c5fd;">
+                    💡 <strong>Tip for Local Run:</strong> To trigger Chrome's full PWA installation on desktop, run via <code>RUN_ADMIN_PANEL_PWA.bat</code> (runs at <code>http://localhost:8080</code>).
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="triggerPwaInstallPrompt()" style="margin-top: 18px; width: 100%;">
+                📲 Launch Install Prompt Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Header Navbar -->
+    <header class="navbar">
+        <div class="brand">
+            <div style="position: relative; width: 44px; height: 44px; border-radius: 12px; padding: 2px; background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4); box-shadow: 0 0 16px rgba(59, 130, 246, 0.45); flex-shrink: 0;">
+                <img src="avatar.png" alt="Admin" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover; display: block; background: #070b14;">
+            </div>
+            <div class="brand-text">
+                <h1>Meta AI Automation Studio</h1>
+                <p>Cloud License & HWID Security Admin</p>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <!-- PWA Install Button (Dynamic) -->
+            <button id="pwaInstallBtn" class="btn-pwa-install" onclick="triggerPwaInstallPrompt()" title="Install as Desktop/Mobile App">
+                <span>📲</span>
+                <span>Install App</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('pwaHelpModal').style.display='flex'" title="App install guide">
+                ❓ App Info
+            </button>
+
+            <!-- Status Pill -->
+            <div class="status-pill" id="fbStatusPill">
+                <span class="status-dot"></span>
+                <span id="fbStatusText">Connecting...</span>
+            </div>
+
+            <!-- Refresh Button -->
+            <button class="btn btn-secondary btn-sm" onclick="location.reload()" title="Refresh Dashboard">
+                🔄 Sync
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- PWA In-App Banner -->
+        <div class="pwa-banner" id="pwaBanner">
+            <div class="pwa-banner-left">
+                <div class="pwa-banner-icon">🚀</div>
+                <div>
+                    <div class="pwa-banner-title">Install Meta AI Admin as a Desktop App!</div>
+                    <div class="pwa-banner-sub">Get lightning fast 1-click launch from Windows Desktop/Taskbar without opening browser tabs.</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="btn btn-primary btn-sm" onclick="triggerPwaInstallPrompt()" style="padding: 8px 16px;">
+                    📲 Install Now
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('pwaBanner').style.display='none'">
+                    ✕ Dismiss
+                </button>
+            </div>
+        </div>
+
+        <!-- Metric Statistics Cards -->
+        <section class="stats-grid">
+            <div class="stat-card" style="--card-accent: #3b82f6;">
+                <div class="stat-header">
+                    <span class="label">Total Generated</span>
+                    <span class="stat-icon">🗂️</span>
+                </div>
+                <div class="val" id="statTotal">0</div>
+                <div class="stat-subtext">Issued licenses in database</div>
+            </div>
+
+            <div class="stat-card" style="--card-accent: #10b981;">
+                <div class="stat-header">
+                    <span class="label">Active Licenses</span>
+                    <span class="stat-icon">🟢</span>
+                </div>
+                <div class="val" id="statActive" style="color: #34d399;">0</div>
+                <div class="stat-subtext">Currently valid & working</div>
+            </div>
+
+            <div class="stat-card" style="--card-accent: #f59e0b;">
+                <div class="stat-header">
+                    <span class="label">Expired Licenses</span>
+                    <span class="stat-icon">⏳</span>
+                </div>
+                <div class="val" id="statExpired" style="color: #fbbf24;">0</div>
+                <div class="stat-subtext">Requires duration extension</div>
+            </div>
+
+            <div class="stat-card" style="--card-accent: #ef4444;">
+                <div class="stat-header">
+                    <span class="label">Revoked / Locked</span>
+                    <span class="stat-icon">🚫</span>
+                </div>
+                <div class="val" id="statRevoked" style="color: #f87171;">0</div>
+                <div class="stat-subtext">Blocked or access revoked</div>
+            </div>
+        </section>
+
+        <!-- Main Grid Layout -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT: License Generator Form -->
+            <section class="card">
+                <div class="card-header-flex">
+                    <h2 class="card-title">
+                        <span>🔑</span>
+                        <span>Generate License</span>
+                    </h2>
+                    <span class="badge-tag">Cloud Firestore</span>
+                </div>
+
+                <!-- Admin Prefix Tag -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>👑 Admin Identity Prefix</span>
+                        <span style="font-size:0.75rem; color:#60a5fa;">Branded Key Tag</span>
+                    </label>
+                    <select id="prefixSelect" class="form-select" onchange="toggleCustomPrefix()">
+                        <option value="ratan_vai--" selected>ratan_vai-- (Ratan Vai)</option>
+                        <option value="yeasin_vai--">yeasin_vai-- (Yeasin Vai)</option>
+                        <option value="admin--">admin-- (General Admin)</option>
+                        <option value="vip--">vip-- (VIP Client)</option>
+                        <option value="custom">✏️ Custom Prefix Name...</option>
+                        <option value="">None (Standard META-XXXX)</option>
+                    </select>
+                    <input type="text" id="customPrefixInput" class="form-input" style="display:none; margin-top:8px;" placeholder="e.g. boss_ratan--">
+                </div>
+
+                <!-- Client Name -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>👤 Client / Buyer Name</span>
+                        <span style="font-size:0.75rem; color:var(--text-sub);">Optional identifier</span>
+                    </label>
+                    <input type="text" id="clientNameInput" class="form-input" placeholder="e.g. Tanvir Hasan / Client #104">
+                </div>
+
+                <!-- Duration Selector -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>⏱️ Validity Duration</span>
+                        <span id="durationBadgeText" style="font-size:0.75rem; color:#34d399;">30 Days selected</span>
+                    </label>
+                    <select id="durationSelect" class="form-select" onchange="handleDurationChange()">
+                        <option value="1">1 Day (24 Hours - Trial)</option>
+                        <option value="3">3 Days (Quick Test)</option>
+                        <option value="7">7 Days (1 Week)</option>
+                        <option value="15">15 Days (Half Month)</option>
+                        <option value="30" selected>30 Days (1 Month)</option>
+                        <option value="60">60 Days (2 Months)</option>
+                        <option value="90">90 Days (3 Months)</option>
+                        <option value="180">180 Days (6 Months)</option>
+                        <option value="365">365 Days (1 Year)</option>
+                        <option value="custom">⚙️ Custom Number of Days...</option>
+                        <option value="-1">♾️ Lifetime (No Expiry)</option>
+                    </select>
+
+                    <!-- Quick Preset Chips -->
+                    <div class="duration-presets">
+                        <span class="dur-chip" onclick="setQuickDuration(1)">1d</span>
+                        <span class="dur-chip" onclick="setQuickDuration(7)">7d</span>
+                        <span class="dur-chip active" onclick="setQuickDuration(30)">30d</span>
+                        <span class="dur-chip" onclick="setQuickDuration(90)">90d</span>
+                        <span class="dur-chip" onclick="setQuickDuration(365)">1y</span>
+                        <span class="dur-chip" onclick="setQuickDuration(-1)">♾️ Lifetime</span>
+                    </div>
+
+                    <div id="customDurationBox" style="display:none; margin-top:8px;">
+                        <input type="number" id="customDaysInput" class="form-input" placeholder="Enter days (e.g. 45)" min="1" value="45" oninput="updateCustomDurationBadge()">
+                    </div>
+                </div>
+
+                <!-- Hardware Lock (HWID) -->
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="hwidLockCheck" checked>
+                        <div>
+                            <div style="font-weight: 700; color: #f8fafc; font-size: 0.88rem;">🔒 Strict 1-PC HWID Lock</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                                Auto-binds to client's motherboard/CPU hash on 1st launch. Cannot be shared.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="btn btn-primary" id="btnGenKey" onclick="handleGenerateKey()">
+                    <span>⚡</span>
+                    <span>Generate & Activate Key</span>
+                </button>
+
+                <!-- Generated Key Display Box -->
+                <div class="key-display-box" id="keyDisplayBox">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.82rem; color: #34d399; font-weight: 700;">✅ Key Generated Successfully!</span>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">Ready for Client</span>
+                    </div>
+                    <div class="key-code" id="displayKeyCode">META-XXXX-XXXX-XXXX</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-success btn-sm" style="flex: 1;" onclick="copyGeneratedKey()">
+                            📋 Copy Key
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('keyDisplayBox').style.display='none'">
+                            ✕ Close
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT: License Table & Actions -->
+            <section class="card">
+                <div class="card-header-flex" style="margin-bottom: 14px;">
+                    <h2 class="card-title">
+                        <span>📜</span>
+                        <span>License Records</span>
+                    </h2>
+
+                    <!-- Filter Tabs -->
+                    <div class="filter-tabs">
+                        <div class="filter-tab active" data-filter="all" onclick="setFilter('all')">
+                            All <span class="tab-badge" id="badgeAll">0</span>
+                        </div>
+                        <div class="filter-tab" data-filter="active" onclick="setFilter('active')">
+                            Active <span class="tab-badge" id="badgeActive">0</span>
+                        </div>
+                        <div class="filter-tab" data-filter="expired" onclick="setFilter('expired')">
+                            Expired <span class="tab-badge" id="badgeExpired">0</span>
+                        </div>
+                        <div class="filter-tab" data-filter="revoked" onclick="setFilter('revoked')">
+                            Revoked <span class="tab-badge" id="badgeRevoked">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search by key, client name, status, or HWID..." oninput="renderTable()">
+                    </div>
+
+                    <div class="table-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="exportLicensesCSV()" title="Export current list to CSV file">
+                            📥 Export CSV
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="copyAllKeys()" title="Copy all visible keys to clipboard">
+                            📑 Copy All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table Container -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>License Key</th>
+                                <th>Client Name</th>
+                                <th>Expiry / Status</th>
+                                <th>HWID Device Lock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="licenseTableBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <div style="font-size: 1.5rem; margin-bottom: 8px;">⏳</div>
+                                    Connecting to Cloud Firestore...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>Meta AI Automation Studio &bull; Next-Gen Autonomous Growth Engine</div>
+            <div>Secure Real-Time License Infrastructure with PWA Capability</div>
+        </footer>
+    </main>
+
+    <!-- Firebase Scripts (v10 Modular SDK) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            setDoc,
+            deleteDoc,
+            updateDoc,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        // Exact Firebase configuration provided
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCILFKE2bblpsGH6fLEJViHao2n98h7CA",
+            authDomain: "meta-project-7bd88.firebaseapp.com",
+            databaseURL: "https://meta-project-7bd88-default-rtdb.firebaseio.com",
+            projectId: "meta-project-7bd88",
+            storageBucket: "meta-project-7bd88.firebasestorage.app",
+            messagingSenderId: "45731693003",
+            appId: "1:45731693003:web:99cb451615e2fe522fb64e",
+            measurementId: "G-CJ6PKHJ7JE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.allLicenses = [];
+        window.currentFilter = 'all';
+
+        // Online / Offline Detection
+        window.addEventListener('online', () => {
+            document.getElementById('offlineNotice').style.display = 'none';
+        });
+        window.addEventListener('offline', () => {
+            document.getElementById('offlineNotice').style.display = 'block';
+        });
+
+        // ==========================================
+        // PWA REGISTRATION & INSTALLATION HANDLER
+        // ==========================================
+        let deferredInstallPrompt = null;
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => {
+                        console.log('✅ PWA Service Worker Registered with scope:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('PWA Service Worker Registration Note:', err);
+                    });
+            });
+        }
+
+        // Capture Chrome's install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            console.log('🎉 Chrome beforeinstallprompt detected!');
+            
+            // Show Install Button & Banner
+            const pwaBtn = document.getElementById('pwaInstallBtn');
+            if (pwaBtn) pwaBtn.style.display = 'inline-flex';
+            
+            const pwaBanner = document.getElementById('pwaBanner');
+            if (pwaBanner && !sessionStorage.getItem('pwa_banner_dismissed')) {
+                pwaBanner.style.display = 'flex';
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ Meta Admin PWA was installed successfully!');
+            deferredInstallPrompt = null;
+            const pwaBtn = document.getElementById('pwaInstallBtn');
+            if (pwaBtn) {
+                pwaBtn.style.display = 'inline-flex';
+                pwaBtn.innerHTML = '<span>✅</span><span>App Installed</span>';
+                pwaBtn.style.background = 'rgba(16, 185, 129, 0.2)';
+                pwaBtn.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+            }
+            const pwaBanner = document.getElementById('pwaBanner');
+            if (pwaBanner) pwaBanner.style.display = 'none';
+            showToast('🎉 Meta AI Admin installed as an app!');
+        });
+
+        // Check if already running in standalone PWA window
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            console.log('📱 Running in standalone PWA window');
+            const pwaBtn = document.getElementById('pwaInstallBtn');
+            if (pwaBtn) {
+                pwaBtn.style.display = 'inline-flex';
+                pwaBtn.innerHTML = '<span>⚡</span><span>Standalone App</span>';
+            }
+            const pwaBanner = document.getElementById('pwaBanner');
+            if (pwaBanner) pwaBanner.style.display = 'none';
+        } else {
+            // Default show install button so user can click it anytime
+            const pwaBtn = document.getElementById('pwaInstallBtn');
+            if (pwaBtn) pwaBtn.style.display = 'inline-flex';
+        }
+
+        window.triggerPwaInstallPrompt = async function () {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                const choiceResult = await deferredInstallPrompt.userChoice;
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted PWA installation');
+                } else {
+                    console.log('User dismissed PWA installation');
+                }
+                deferredInstallPrompt = null;
+                document.getElementById('pwaHelpModal').style.display = 'none';
+            } else {
+                // If Chrome hasn't fired beforeinstallprompt (e.g. running via file:// or already installed)
+                document.getElementById('pwaHelpModal').style.display = 'flex';
+            }
+        };
+
+        // ==========================================
+        // AUTHENTICATION PIN
+        // ==========================================
+        window.verifyAdminPin = function () {
+            const pin = document.getElementById("adminPinInput").value.trim();
+            const validPin = localStorage.getItem("admin_pin") || "admin123";
+            if (pin === "admin123" || pin === validPin) {
+                document.getElementById("loginModal").style.display = "none";
+                loadLicensesRealtime();
+                playBeep(600, 0.08);
+            } else {
+                document.getElementById("loginError").style.display = "block";
+                playBeep(200, 0.2);
+            }
+        };
+
+        document.getElementById("adminPinInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") verifyAdminPin();
+        });
+
+        // Subtle Web Audio Feedback
+        function playBeep(freq = 600, dur = 0.08) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + dur);
+            } catch(e) {}
+        }
+
+        // ==========================================
+        // REALTIME FIRESTORE LISTENER
+        // ==========================================
+        function loadLicensesRealtime() {
+            try {
+                const colRef = collection(db, "licenses");
+                onSnapshot(colRef, (snapshot) => {
+                    window.allLicenses = [];
+                    snapshot.forEach((docSnap) => {
+                        window.allLicenses.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    
+                    // Sort latest created first
+                    window.allLicenses.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+
+                    document.getElementById("fbStatusPill").style.background = "rgba(16, 185, 129, 0.15)";
+                    document.getElementById("fbStatusPill").style.color = "#34d399";
+                    document.getElementById("fbStatusText").textContent = "Firebase Live Connected";
+                    
+                    renderTable();
+                    updateStats();
+                }, (error) => {
+                    console.error("Firestore listener error:", error);
+                    document.getElementById("fbStatusPill").style.background = "rgba(239, 68, 68, 0.15)";
+                    document.getElementById("fbStatusPill").style.color = "var(--danger)";
+                    document.getElementById("fbStatusText").textContent = "Firestore Connection Notice";
+                    document.getElementById("licenseTableBody").innerHTML = `
+                        <tr>
+                            <td colspan="5" class="empty-state" style="color: var(--danger);">
+                                ⚠️ Cloud Firestore needs to be initialized in Firebase Console.<br>
+                                <a href="https://console.firebase.google.com/project/meta-project-7bd88/firestore" target="_blank" style="color: #60a5fa; text-decoration: underline;">
+                                  Click here to open Firebase Console and verify Database Rules
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (e) {
+                console.error("Firebase init error:", e);
+            }
+        }
+
+        // ==========================================
+        // DURATION & PREFIX CONTROLS
+        // ==========================================
+        window.toggleCustomPrefix = function () {
+            const sel = document.getElementById("prefixSelect").value;
+            const input = document.getElementById("customPrefixInput");
+            input.style.display = sel === "custom" ? "block" : "none";
+            if (sel === "custom") input.focus();
+        };
+
+        window.handleDurationChange = function () {
+            const sel = document.getElementById("durationSelect").value;
+            const box = document.getElementById("customDurationBox");
+            box.style.display = sel === "custom" ? "block" : "none";
+            
+            // Highlight chips
+            document.querySelectorAll('.dur-chip').forEach(c => c.classList.remove('active'));
+            const matchingChip = Array.from(document.querySelectorAll('.dur-chip')).find(c => c.getAttribute('onclick')?.includes(`(${sel})`));
+            if (matchingChip) matchingChip.classList.add('active');
+
+            updateDurationBadge();
+        };
+
+        window.setQuickDuration = function (val) {
+            const select = document.getElementById("durationSelect");
+            select.value = val.toString();
+            handleDurationChange();
+        };
+
+        function updateDurationBadge() {
+            const val = document.getElementById("durationSelect").value;
+            const badge = document.getElementById("durationBadgeText");
+            if (val === "-1") {
+                badge.textContent = "♾️ Lifetime (No Expiry)";
+                badge.style.color = "#a78bfa";
+            } else if (val === "custom") {
+                const days = document.getElementById("customDaysInput").value || 1;
+                badge.textContent = `${days} Days custom`;
+                badge.style.color = "#38bdf8";
+            } else {
+                badge.textContent = `${val} Day${val > 1 ? 's' : ''} selected`;
+                badge.style.color = "#34d399";
+            }
+        }
+
+        window.updateCustomDurationBadge = function() {
+            updateDurationBadge();
+        };
+
+        // ==========================================
+        // KEY GENERATOR LOGIC
+        // ==========================================
+        function generateLicenseCode() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+            
+            let prefix = document.getElementById("prefixSelect").value;
+            if (prefix === "custom") {
+                prefix = document.getElementById("customPrefixInput").value.trim();
+                if (prefix && !prefix.endsWith("--") && !prefix.endsWith("-")) {
+                    prefix += "--";
+                }
+            }
+            const cleanPrefix = (prefix || "").toUpperCase();
+            return `${cleanPrefix}META-${seg()}-${seg()}`;
+        }
+
+        window.handleGenerateKey = async function () {
+            const clientName = document.getElementById("clientNameInput").value.trim() || "Valued Client";
+            let durationDays = 30;
+            const durVal = document.getElementById("durationSelect").value;
+            if (durVal === "custom") {
+                durationDays = parseFloat(document.getElementById("customDaysInput").value) || 30;
+            } else {
+                durationDays = parseFloat(durVal);
+            }
+            const isHwidLock = document.getElementById("hwidLockCheck").checked;
+
+            const btn = document.getElementById("btnGenKey");
+            btn.disabled = true;
+            btn.innerHTML = `<span>⏳</span><span>Generating & Syncing...</span>`;
+
+            const keyCode = generateLicenseCode();
+            const now = Date.now();
+            let expiresAt = 0; // 0 means lifetime
+
+            if (durationDays > 0) {
+                expiresAt = now + (durationDays * 24 * 60 * 60 * 1000);
+            }
+
+            const newLicense = {
+                key: keyCode,
+                client_name: clientName,
+                duration_days: durationDays,
+                created_at: now,
+                expires_at: expiresAt,
+                status: "active",
+                device_lock: isHwidLock,
+                bound_hwid: ""
+            };
+
+            try {
+                await setDoc(doc(db, "licenses", keyCode), newLicense);
+
+                document.getElementById("displayKeyCode").textContent = keyCode;
+                document.getElementById("keyDisplayBox").style.display = "block";
+                document.getElementById("clientNameInput").value = "";
+                
+                playBeep(800, 0.12);
+                showToast(`🎉 License Key Created:<br><code>${keyCode}</code>`);
+            } catch (err) {
+                alert("Error saving key to Firebase:\n" + err.message + "\n\nMake sure Firestore Database is created in Firebase Console!");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>⚡</span><span>Generate & Activate Key</span>`;
+            }
+        };
+
+        window.copyGeneratedKey = function () {
+            const text = document.getElementById("displayKeyCode").textContent;
+            navigator.clipboard.writeText(text);
+            playBeep(700, 0.05);
+            showToast(`📋 Copied generated key to clipboard:<br><code>${text}</code>`);
+        };
+
+        window.copyTableKey = function (key) {
+            navigator.clipboard.writeText(key);
+            playBeep(700, 0.05);
+            showToast(`📋 Copied license key:<br><code>${key}</code>`);
+        };
+
+        // ==========================================
+        // ACTIONS: BLOCK / RESET / EXTEND / DELETE
+        // ==========================================
+        window.toggleRevoke = async function (keyId, currentStatus) {
+            const newStatus = currentStatus === "active" ? "revoked" : "active";
+            const confirmMsg = newStatus === "revoked" 
+                ? `Are you sure you want to BLOCK / REVOKE license:\n${keyId}?` 
+                : `Are you sure you want to UNBLOCK / ACTIVATE license:\n${keyId}?`;
+            if (!confirm(confirmMsg)) return;
+
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { status: newStatus });
+                showToast(`Status updated to <b>${newStatus.toUpperCase()}</b> for: <code>${keyId}</code>`);
+            } catch (e) {
+                alert("Error updating status: " + e.message);
+            }
+        };
+
+        window.resetHwid = async function (keyId) {
+            if (!confirm(`Are you sure you want to RESET/UNBIND the device HWID lock for:\n${keyId}?\n\nThis will allow the client to activate on a new computer!`)) return;
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { bound_hwid: "" });
+                playBeep(500, 0.08);
+                showToast(`🔓 Device HWID unlinked successfully for: <code>${keyId}</code>`);
+            } catch (e) {
+                alert("Error resetting HWID: " + e.message);
+            }
+        };
+
+        window.extendLicense = async function (keyId, daysToAdd) {
+            const lic = window.allLicenses.find(l => l.id === keyId);
+            if (!lic) return;
+            const now = Date.now();
+            const base = (lic.expires_at && lic.expires_at > now) ? lic.expires_at : now;
+            const newExpiry = base + (daysToAdd * 24 * 60 * 60 * 1000);
+            try {
+                await updateDoc(doc(db, "licenses", keyId), { expires_at: newExpiry, status: "active" });
+                playBeep(750, 0.08);
+                showToast(`⏳ Extended key <code>${keyId}</code> by +${daysToAdd} days!`);
+            } catch (e) {
+                alert("Error extending key: " + e.message);
+            }
+        };
+
+        window.deleteLicense = async function (keyId) {
+            if (!confirm(`⚠️ Permanently DELETE license key:\n${keyId}?\n\nThis action cannot be undone.`)) return;
+            try {
+                await deleteDoc(doc(db, "licenses", keyId));
+                showToast(`🗑️ Deleted license: <code>${keyId}</code>`);
+            } catch (e) {
+                alert("Error deleting key: " + e.message);
+            }
+        };
+
+        // ==========================================
+        // FILTER & RENDER TABLE
+        // ==========================================
+        window.setFilter = function (filterName) {
+            window.currentFilter = filterName;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                if (tab.getAttribute('data-filter') === filterName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            renderTable();
+        };
+
+        window.renderTable = function () {
+            const search = (document.getElementById("searchInput").value || "").toLowerCase();
+            const tbody = document.getElementById("licenseTableBody");
+            const now = Date.now();
+
+            const filtered = window.allLicenses.filter(lic => {
+                const isExpired = lic.expires_at > 0 && now > lic.expires_at;
+                const effectiveStatus = lic.status === 'revoked' ? 'revoked' : (isExpired ? 'expired' : 'active');
+
+                // Filter tabs
+                if (window.currentFilter !== 'all' && effectiveStatus !== window.currentFilter) {
+                    return false;
+                }
+
+                // Search query
+                return (
+                    (lic.key || "").toLowerCase().includes(search) ||
+                    (lic.client_name || "").toLowerCase().includes(search) ||
+                    (lic.status || "").toLowerCase().includes(search) ||
+                    (lic.bound_hwid || "").toLowerCase().includes(search)
+                );
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <div style="font-size: 1.5rem; margin-bottom: 6px;">🔍</div>
+                            No license keys match your search or filter.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(lic => {
+                const isExpired = lic.expires_at > 0 && now > lic.expires_at;
+                
+                // Status badge
+                let statusBadge = `<span class="badge badge-active">● Active</span>`;
+                if (lic.status === "revoked") {
+                    statusBadge = `<span class="badge badge-revoked">🚫 Revoked</span>`;
+                } else if (isExpired) {
+                    statusBadge = `<span class="badge badge-expired">⏳ Expired</span>`;
+                }
+
+                // Expiry string
+                let expiryStr = `<span style="color: #c084fc; font-weight: 600;">♾️ Lifetime</span>`;
+                if (lic.expires_at > 0) {
+                    const diffMs = lic.expires_at - now;
+                    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                    const expDate = new Date(lic.expires_at).toLocaleDateString();
+                    if (diffDays > 0) {
+                        expiryStr = `<span>${expDate} <small style="color:#34d399;">(${diffDays}d left)</small></span>`;
+                    } else {
+                        expiryStr = `<span style="color: #f87171;">${expDate} <small>(Expired)</small></span>`;
+                    }
+                }
+
+                // HWID display
+                const hwidDisplay = lic.bound_hwid ?
+                    `<div style="display:inline-flex; align-items:center; gap:6px;">
+                        <span title="${lic.bound_hwid}" style="font-family:'JetBrains Mono',monospace; font-size:0.78rem; background:rgba(0,0,0,0.4); padding:3px 7px; border-radius:5px; color:#38bdf8; border:1px solid rgba(56,189,248,0.25);">
+                            🔒 ${lic.bound_hwid.substring(0, 10)}...
+                        </span>
+                        <button class="btn btn-warning btn-sm" onclick="resetHwid('${lic.id}')" title="Reset HWID to allow client activation on new PC" style="padding:2px 7px; font-size:0.72rem;">
+                            🔄 Reset
+                        </button>
+                    </div>` :
+                    `<span style="color: var(--text-muted); font-size:0.78rem; font-style:italic;">
+                        🔓 Unbound (Ready for PC)
+                    </span>`;
+
+                return `
+                    <tr>
+                        <td>
+                            <div style="display:inline-flex; align-items:center; gap:6px;">
+                                <span class="key-badge" onclick="copyTableKey('${lic.key}')" title="Click to copy key">
+                                    <span>${lic.key}</span>
+                                </span>
+                                <button class="btn btn-secondary btn-sm" onclick="copyTableKey('${lic.key}')" title="Copy Key" style="padding: 3px 6px;">
+                                    📋
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: #f8fafc;">${lic.client_name || "Valued Client"}</div>
+                            <div style="font-size: 0.72rem; color: var(--text-sub);">
+                                Created: ${lic.created_at ? new Date(lic.created_at).toLocaleDateString() : 'N/A'}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="margin-bottom: 3px;">${expiryStr}</div>
+                            <div>${statusBadge}</div>
+                        </td>
+                        <td>${hwidDisplay}</td>
+                        <td>
+                            <div class="action-group">
+                                <button class="btn ${lic.status === 'active' ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleRevoke('${lic.id}', '${lic.status}')" title="${lic.status === 'active' ? 'Block Access' : 'Unblock Access'}">
+                                    ${lic.status === 'active' ? '🚫 Block' : '🟢 Unblock'}
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="extendLicense('${lic.id}', 30)" title="Extend +30 Days">
+                                    +30d
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="deleteLicense('${lic.id}')" style="color: var(--danger);" title="Delete Key">
+                                    🗑️
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        };
+
+        // ==========================================
+        // STATS & BADGE COUNTERS
+        // ==========================================
+        function updateStats() {
+            const now = Date.now();
+            let active = 0, expired = 0, revoked = 0;
+            
+            window.allLicenses.forEach(l => {
+                if (l.status === "revoked") {
+                    revoked++;
+                } else if (l.expires_at > 0 && now > l.expires_at) {
+                    expired++;
+                } else {
+                    active++;
+                }
+            });
+
+            document.getElementById("statTotal").textContent = window.allLicenses.length;
+            document.getElementById("statActive").textContent = active;
+            document.getElementById("statExpired").textContent = expired;
+            document.getElementById("statRevoked").textContent = revoked;
+
+            // Update Tab Badges
+            document.getElementById("badgeAll").textContent = window.allLicenses.length;
+            document.getElementById("badgeActive").textContent = active;
+            document.getElementById("badgeExpired").textContent = expired;
+            document.getElementById("badgeRevoked").textContent = revoked;
+        }
+
+        // ==========================================
+        // EXPORT & BATCH TOOLS
+        // ==========================================
+        window.exportLicensesCSV = function () {
+            if (!window.allLicenses.length) {
+                alert("No licenses available to export!");
+                return;
+            }
+            let csv = "License Key,Client Name,Status,Created At,Expires At,Device Locked,Bound HWID\n";
+            window.allLicenses.forEach(l => {
+                const created = l.created_at ? new Date(l.created_at).toISOString() : "";
+                const expires = l.expires_at ? new Date(l.expires_at).toISOString() : "Lifetime";
+                csv += `"${l.key}","${l.client_name || ''}","${l.status}","${created}","${expires}","${l.device_lock ? 'Yes' : 'No'}","${l.bound_hwid || ''}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `meta_ai_licenses_${Date.now()}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("📥 Exported licenses to CSV file!");
+        };
+
+        window.copyAllKeys = function () {
+            if (!window.allLicenses.length) {
+                alert("No license keys found!");
+                return;
+            }
+            const keys = window.allLicenses.map(l => l.key).join("\n");
+            navigator.clipboard.writeText(keys);
+            showToast(`📋 Copied all <b>${window.allLicenses.length}</b> license keys to clipboard!`);
+        };
+
+        // Toast Notification System
+        function showToast(msg) {
+            let container = document.getElementById("toastContainer");
+            if (!container) {
+                container = document.createElement("div");
+                container.id = "toastContainer";
+                container.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;";
+                document.body.appendChild(container);
+            }
+            const t = document.createElement("div");
+            t.style.cssText = "background: rgba(14, 21, 38, 0.95); border: 1px solid #38bdf8; color: #f8fafc; padding: 12px 18px; border-radius: 10px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(12px); pointer-events: auto; animation: toastIn 0.25s ease;";
+            t.innerHTML = msg;
+            container.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = "0";
+                t.style.transform = "translateX(20px)";
+                t.style.transition = "all 0.3s";
+                setTimeout(() => t.remove(), 300);
+            }, 3200);
+        }
+    </script>
+</body>
+
+</html>
