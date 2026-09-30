@@ -437,6 +437,115 @@
             color: #93c5fd;
         }
 
+        /* Generator Mode Tabs */
+        .gen-mode-tabs {
+            display: flex;
+            background: rgba(10, 16, 30, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .gen-mode-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .gen-mode-tab:hover {
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .gen-mode-tab.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .gen-mode-tab.active.bulk-active {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Bulk Quantity Presets */
+        .bulk-qty-presets {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .bulk-qty-pill {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+
+        .bulk-qty-pill:hover, .bulk-qty-pill.active {
+            background: rgba(139, 92, 246, 0.25);
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+        }
+
+        /* Bulk Result Box In Card */
+        .bulk-result-card {
+            display: none;
+            margin-top: 18px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 14px;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .bulk-keys-textarea {
+            width: 100%;
+            min-height: 140px;
+            max-height: 240px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px dashed rgba(139, 92, 246, 0.4);
+            border-radius: 10px;
+            color: #c4b5fd;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            padding: 12px;
+            margin: 10px 0;
+            resize: vertical;
+            outline: none;
+            white-space: pre;
+            overflow-y: auto;
+            user-select: all;
+        }
+
+        .bulk-keys-textarea:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.25);
+        }
+
         .checkbox-container {
             display: flex;
             align-items: center;
@@ -837,10 +946,30 @@
     <!-- Admin Login Modal -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal">
-            <div style="position: relative; width: 84px; height: 84px; margin: 0 auto 14px;">
-                <img src="avatar.png" alt="Admin Master" style="width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2.5px solid #3b82f6; box-shadow: 0 0 24px rgba(59, 130, 246, 0.55); background: #0e1526;">
-                <span style="position: absolute; bottom: 2px; right: 4px; width: 14px; height: 14px; background: #10b981; border: 2px solid #0d1424; border-radius: 50%;" title="Admin Active"></span>
+            <!-- Dual Co-Founders & Partner Avatar Display -->
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; position: relative;">
+                    <!-- Admin Avatar -->
+                    <div style="position: relative; width: 78px; height: 78px; z-index: 2;" title="Master Admin & Co-Founder">
+                        <img src="avatar.png" alt="Master Admin" style="width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 2.5px solid #38bdf8; box-shadow: 0 0 22px rgba(56, 189, 248, 0.55); background: #0e1526; display: block;">
+                        <span style="position: absolute; bottom: 2px; right: 4px; width: 14px; height: 14px; background: #10b981; border: 2px solid #0d1424; border-radius: 50%;" title="Online"></span>
+                    </div>
+                    <!-- Partnership Badge -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 4; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(0,0,0,0.6); border: 2px solid #0b1120;">
+                        🤝
+                    </div>
+                    <!-- Partner Avatar -->
+                    <div style="position: relative; width: 78px; height: 78px; margin-left: -16px; z-index: 1;" title="Executive Partner & Co-Founder">
+                        <img src="partner.png" alt="Executive Partner" style="width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 2.5px solid #a855f7; box-shadow: 0 0 22px rgba(168, 85, 247, 0.55); background: #0e1526; display: block;">
+                        <span style="position: absolute; bottom: 2px; right: 4px; width: 14px; height: 14px; background: #10b981; border: 2px solid #0d1424; border-radius: 50%;" title="Online"></span>
+                    </div>
+                </div>
             </div>
+
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 20px; padding: 4px 14px; margin-bottom: 12px; font-size: 0.72rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">
+                <span>⚡ CO-FOUNDERS & MASTER ADMINS</span>
+            </div>
+
             <h2 style="margin-bottom: 6px; font-weight: 800; font-size: 1.35rem; color: #f8fafc;">Admin Authorization</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
                 Enter Master Security PIN to manage licensing & HWID locks
@@ -884,19 +1013,86 @@
         </div>
     </div>
 
+    <!-- Bulk Keys Result Modal -->
+    <div id="bulkResultModal" class="modal-overlay" style="display: none;">
+        <div class="modal" style="max-width: 600px; width: 95%; text-align: left; padding: 26px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.7rem;">⚡</span>
+                    <div>
+                        <h3 style="font-size: 1.22rem; font-weight: 800; color: #f8fafc;" id="bulkModalTitle">20 Keys Generated in Bulk!</h3>
+                        <p style="font-size: 0.78rem; color: #34d399; font-weight: 600;">✅ Successfully saved & synced to Cloud Firestore</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="closeBulkModal()" style="padding: 5px 10px;">✕</button>
+            </div>
+
+            <!-- Meta details tag bar -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.78rem; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);" id="bulkModalMeta">
+                <!-- Dynamically populated -->
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" style="margin-bottom: 0;">
+                    <span>Generated Keys (Select & Copy):</span>
+                </label>
+                <span style="font-size: 0.75rem; color: #a78bfa; font-weight: 600;" id="bulkModalCountLabel">20 keys ready</span>
+            </div>
+            
+            <textarea id="bulkModalKeysTextarea" class="bulk-keys-textarea" style="min-height: 180px; font-size: 0.86rem;" readonly onclick="this.select()"></textarea>
+
+            <!-- Action buttons grid -->
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; margin-top: 14px;">
+                <button class="btn btn-success" onclick="copyBulkKeysPlain()" style="padding: 12px; font-weight: 700; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);">
+                    <span>📋</span>
+                    <span id="btnCopyAllPlainLabel">Copy All Keys</span>
+                </button>
+                <button class="btn btn-secondary" onclick="copyBulkKeysDetailed()" style="padding: 12px; font-weight: 600;" title="Copy keys with client name & validity details">
+                    <span>📑</span>
+                    <span>Copy with Details</span>
+                </button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08);">
+                <button class="btn btn-secondary btn-sm" onclick="downloadBulkKeysTxt()" style="gap: 6px;">
+                    <span>💾</span>
+                    <span>Download as .TXT</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="closeBulkModal()">
+                    Done & Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header Navbar -->
     <header class="navbar">
         <div class="brand">
-            <div style="position: relative; width: 44px; height: 44px; border-radius: 12px; padding: 2px; background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4); box-shadow: 0 0 16px rgba(59, 130, 246, 0.45); flex-shrink: 0;">
-                <img src="avatar.png" alt="Admin" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover; display: block; background: #070b14;">
+            <!-- Dual Co-Founders Avatar Brand -->
+            <div style="display: flex; align-items: center; position: relative; flex-shrink: 0;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; padding: 2px; background: linear-gradient(135deg, #38bdf8, #3b82f6); box-shadow: 0 0 14px rgba(56, 189, 248, 0.5); position: relative; z-index: 2;" title="Master Admin & Co-Founder">
+                    <img src="avatar.png" alt="Admin" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover; display: block; background: #070b14;">
+                </div>
+                <div style="width: 42px; height: 42px; border-radius: 12px; padding: 2px; background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 0 14px rgba(168, 85, 247, 0.5); margin-left: -14px; position: relative; z-index: 1;" title="Executive Partner & Co-Founder">
+                    <img src="partner.png" alt="Partner Admin" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover; display: block; background: #070b14;">
+                </div>
             </div>
             <div class="brand-text">
                 <h1>Meta AI Automation Studio</h1>
-                <p>Cloud License & HWID Security Admin</p>
+                <p>Cloud License & HWID Security Admin &bull; <span style="color: #38bdf8; font-weight: 600;">Partners Hub</span></p>
             </div>
         </div>
 
         <div class="nav-actions">
+            <!-- Leadership Team Pill -->
+            <div class="status-pill" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); padding: 4px 10px 4px 5px; gap: 8px;" title="Meta AI Executive Leadership">
+                <div style="display: flex; align-items: center;">
+                    <img src="avatar.png" alt="Admin" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38bdf8;">
+                    <img src="partner.png" alt="Partner" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid #a855f7; margin-left: -8px;">
+                </div>
+                <span style="font-size: 0.76rem; font-weight: 700; color: #f8fafc; letter-spacing: 0.2px;">Leadership Partners</span>
+            </div>
+
             <!-- PWA Install Button (Dynamic) -->
             <button id="pwaInstallBtn" class="btn-pwa-install" onclick="triggerPwaInstallPrompt()" title="Install as Desktop/Mobile App">
                 <span>📲</span>
@@ -905,6 +1101,12 @@
             <button class="btn btn-secondary btn-sm" onclick="document.getElementById('pwaHelpModal').style.display='flex'" title="App install guide">
                 ❓ App Info
             </button>
+
+            <!-- Auto-Clean 24h Status Pill -->
+            <div class="status-pill" id="autoCleanPill" style="background: rgba(139, 92, 246, 0.12); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3);" title="Expired keys are automatically purged from database 24 hours after expiration">
+                <span>🧹</span>
+                <span>Auto-Clean: 24h Active</span>
+            </div>
 
             <!-- Status Pill -->
             <div class="status-pill" id="fbStatusPill">
@@ -966,7 +1168,7 @@
                     <span class="stat-icon">⏳</span>
                 </div>
                 <div class="val" id="statExpired" style="color: #fbbf24;">0</div>
-                <div class="stat-subtext">Requires duration extension</div>
+                <div class="stat-subtext">Auto-purged after 24h expired</div>
             </div>
 
             <div class="stat-card" style="--card-accent: #ef4444;">
@@ -987,12 +1189,45 @@
                 <div class="card-header-flex">
                     <h2 class="card-title">
                         <span>🔑</span>
-                        <span>Generate License</span>
+                        <span id="genCardTitle">License Generator</span>
                     </h2>
                     <span class="badge-tag">Cloud Firestore</span>
                 </div>
 
-                <!-- Admin Prefix Tag -->
+                <!-- Mode Selector Tabs: Single vs Bulk -->
+                <div class="gen-mode-tabs">
+                    <button type="button" class="gen-mode-tab active" id="tabModeSingle" onclick="switchGenMode('single')">
+                        <span>🔑</span>
+                        <span>Single Key</span>
+                    </button>
+                    <button type="button" class="gen-mode-tab" id="tabModeBulk" onclick="switchGenMode('bulk')">
+                        <span>⚡</span>
+                        <span>Bulk Keys (20-30-50+)</span>
+                    </button>
+                </div>
+
+                <!-- Bulk Quantity Configuration Box (Bulk Mode Only) -->
+                <div id="bulkConfigBox" style="display: none; margin-bottom: 18px; background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.28); border-radius: 12px; padding: 14px;">
+                    <label class="form-label" style="margin-bottom: 6px;">
+                        <span>📦 Bulk Quantity</span>
+                        <span id="bulkQtyLabel" style="font-size:0.75rem; color:#c4b5fd; font-weight: 700;">20 Keys selected</span>
+                    </label>
+
+                    <!-- Quick Preset Pills: 20, 30, 50, 100, Custom -->
+                    <div class="bulk-qty-presets">
+                        <span class="bulk-qty-pill active" id="pill20" onclick="setBulkQuantity(20)">20 Keys</span>
+                        <span class="bulk-qty-pill" id="pill30" onclick="setBulkQuantity(30)">30 Keys</span>
+                        <span class="bulk-qty-pill" id="pill50" onclick="setBulkQuantity(50)">50 Keys</span>
+                        <span class="bulk-qty-pill" id="pill100" onclick="setBulkQuantity(100)">100 Keys</span>
+                        <span class="bulk-qty-pill" id="pillCustom" onclick="setBulkQuantity('custom')">✏️ Custom</span>
+                    </div>
+
+                    <div id="bulkCustomCountBox" style="display: none; margin-top: 10px;">
+                        <input type="number" id="bulkCountInput" class="form-input" min="1" max="500" value="20" placeholder="Enter custom count (e.g. 25, 40)" oninput="handleBulkCountInput()">
+                    </div>
+                </div>
+
+                <!-- Admin Prefix Tag (Shared) -->
                 <div class="form-group">
                     <label class="form-label">
                         <span>👑 Admin Identity Prefix</span>
@@ -1009,8 +1244,8 @@
                     <input type="text" id="customPrefixInput" class="form-input" style="display:none; margin-top:8px;" placeholder="e.g. boss_ratan--">
                 </div>
 
-                <!-- Client Name -->
-                <div class="form-group">
+                <!-- Client / Batch Identifier -->
+                <div class="form-group" id="singleClientGroup">
                     <label class="form-label">
                         <span>👤 Client / Buyer Name</span>
                         <span style="font-size:0.75rem; color:var(--text-sub);">Optional identifier</span>
@@ -1018,7 +1253,15 @@
                     <input type="text" id="clientNameInput" class="form-input" placeholder="e.g. Tanvir Hasan / Client #104">
                 </div>
 
-                <!-- Duration Selector -->
+                <div class="form-group" id="bulkBatchGroup" style="display: none;">
+                    <label class="form-label">
+                        <span>🏷️ Batch Title / Client Tag</span>
+                        <span style="font-size:0.75rem; color:var(--text-sub);">Tag assigned to each key</span>
+                    </label>
+                    <input type="text" id="bulkBatchTagInput" class="form-input" placeholder="e.g. Reseller Pack #1 / Client Batch" value="Bulk Client">
+                </div>
+
+                <!-- Validity Duration Selector (Shared) -->
                 <div class="form-group">
                     <label class="form-label">
                         <span>⏱️ Validity Duration</span>
@@ -1053,7 +1296,7 @@
                     </div>
                 </div>
 
-                <!-- Hardware Lock (HWID) -->
+                <!-- Hardware Lock (HWID) (Shared) -->
                 <div class="form-group">
                     <label class="checkbox-container">
                         <input type="checkbox" id="hwidLockCheck" checked>
@@ -1066,13 +1309,19 @@
                     </label>
                 </div>
 
-                <!-- Generate Button -->
+                <!-- Single Key Generate Button -->
                 <button class="btn btn-primary" id="btnGenKey" onclick="handleGenerateKey()">
                     <span>⚡</span>
                     <span>Generate & Activate Key</span>
                 </button>
 
-                <!-- Generated Key Display Box -->
+                <!-- Bulk Keys Generate Button -->
+                <button class="btn btn-primary" id="btnGenBulk" onclick="handleGenerateBulkKeys()" style="display: none; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%); box-shadow: 0 4px 18px rgba(139, 92, 246, 0.45);">
+                    <span>⚡</span>
+                    <span id="btnBulkText">Generate 20 Keys in Bulk</span>
+                </button>
+
+                <!-- Single Generated Key Display Box -->
                 <div class="key-display-box" id="keyDisplayBox">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.82rem; color: #34d399; font-weight: 700;">✅ Key Generated Successfully!</span>
@@ -1085,6 +1334,30 @@
                         </button>
                         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('keyDisplayBox').style.display='none'">
                             ✕ Close
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulk Keys Display Box (In-Card View) -->
+                <div class="bulk-result-card" id="bulkResultCard">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.85rem; color: #c4b5fd; font-weight: 700;" id="bulkCardSummaryTitle">
+                            ✅ 20 Keys Generated in Bulk!
+                        </span>
+                        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bulkResultCard').style.display='none'" style="padding: 2px 7px;">
+                            ✕
+                        </button>
+                    </div>
+                    <textarea id="bulkCardTextarea" class="bulk-keys-textarea" readonly onclick="this.select()"></textarea>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn btn-success btn-sm" style="flex: 1;" onclick="copyBulkKeysPlain()">
+                            📋 Copy All Keys
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openBulkModal()" title="Open full bulk manager modal">
+                            🔍 Full View
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="downloadBulkKeysTxt()" title="Download text file">
+                            💾 .TXT
                         </button>
                     </div>
                 </div>
@@ -1123,6 +1396,9 @@
                     </div>
 
                     <div class="table-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="manualPurgeExpiredLicenses()" id="btnPurgeExpired" title="Permanently clean licenses that expired over 24 hours ago">
+                            🧹 Clean Expired (24h+) <span class="tab-badge" id="badgePurgeEligible" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5;">0</span>
+                        </button>
                         <button class="btn btn-secondary btn-sm" onclick="exportLicensesCSV()" title="Export current list to CSV file">
                             📥 Export CSV
                         </button>
@@ -1160,10 +1436,21 @@
 
         <!-- Footer -->
         <footer class="footer">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center;">
+                    <img src="avatar.png" alt="Master Admin" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);">
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: rgba(14, 21, 38, 0.95); border: 1.5px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; margin: 0 -6px; z-index: 2;">🤝</div>
+                    <img src="partner.png" alt="Executive Partner" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #a855f7; box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);">
+                </div>
+                <span style="font-size: 0.84rem; font-weight: 700; color: #e2e8f0; letter-spacing: 0.3px;">Meta AI Executive Partners &bull; Leadership Team</span>
+            </div>
             <div>Meta AI Automation Studio &bull; Next-Gen Autonomous Growth Engine</div>
             <div>Secure Real-Time License Infrastructure with PWA Capability</div>
         </footer>
     </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"></div>
 
     <!-- Firebase Scripts (v10 Modular SDK) -->
     <script type="module">
@@ -1175,7 +1462,8 @@
             setDoc,
             deleteDoc,
             updateDoc,
-            onSnapshot
+            onSnapshot,
+            writeBatch
         } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         // Exact Firebase configuration provided
@@ -1268,7 +1556,7 @@
             if (pwaBtn) pwaBtn.style.display = 'inline-flex';
         }
 
-        window.triggerPwaInstallPrompt = async function () {
+        async function triggerPwaInstallPrompt() {
             if (deferredInstallPrompt) {
                 deferredInstallPrompt.prompt();
                 const choiceResult = await deferredInstallPrompt.userChoice;
@@ -1283,12 +1571,13 @@
                 // If Chrome hasn't fired beforeinstallprompt (e.g. running via file:// or already installed)
                 document.getElementById('pwaHelpModal').style.display = 'flex';
             }
-        };
+        }
+        window.triggerPwaInstallPrompt = triggerPwaInstallPrompt;
 
         // ==========================================
         // AUTHENTICATION PIN
         // ==========================================
-        window.verifyAdminPin = function () {
+        function verifyAdminPin() {
             const pin = document.getElementById("adminPinInput").value.trim();
             const validPin = localStorage.getItem("admin_pin") || "admin123";
             if (pin === "admin123" || pin === validPin) {
@@ -1299,7 +1588,8 @@
                 document.getElementById("loginError").style.display = "block";
                 playBeep(200, 0.2);
             }
-        };
+        }
+        window.verifyAdminPin = verifyAdminPin;
 
         document.getElementById("adminPinInput").addEventListener("keypress", (e) => {
             if (e.key === "Enter") verifyAdminPin();
@@ -1325,6 +1615,19 @@
         // ==========================================
         // REALTIME FIRESTORE LISTENER
         // ==========================================
+        // 24-Hour Expiration Threshold (in milliseconds)
+        const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+        let isPurgingExpired = false;
+        const purgedKeyIds = new Set();
+        let autoPurgeTimer = null;
+
+        window.lastBulkGeneratedKeys = [];
+        window.currentGenMode = 'single';
+        window.selectedBulkQty = 20;
+
+        // ==========================================
+        // REALTIME FIRESTORE LISTENER & AUTO-CLEANUP
+        // ==========================================
         function loadLicensesRealtime() {
             try {
                 const colRef = collection(db, "licenses");
@@ -1343,6 +1646,9 @@
                     
                     renderTable();
                     updateStats();
+
+                    // Automatic cleanup check on data sync
+                    autoPurgeExpiredLicenses();
                 }, (error) => {
                     console.error("Firestore listener error:", error);
                     document.getElementById("fbStatusPill").style.background = "rgba(239, 68, 68, 0.15)";
@@ -1359,22 +1665,101 @@
                         </tr>
                     `;
                 });
+
+                // Periodic check every 60 seconds for keys passing the 24-hour mark
+                if (!autoPurgeTimer) {
+                    autoPurgeTimer = setInterval(() => {
+                        if (window.allLicenses && window.allLicenses.length) {
+                            autoPurgeExpiredLicenses();
+                            renderTable();
+                            updateStats();
+                        }
+                    }, 60000);
+                }
             } catch (e) {
                 console.error("Firebase init error:", e);
             }
         }
 
         // ==========================================
+        // AUTO-PURGE EXPIRED LICENSES (24H RULE)
+        // ==========================================
+        async function autoPurgeExpiredLicenses() {
+            if (isPurgingExpired || !window.allLicenses || !window.allLicenses.length) return;
+            const now = Date.now();
+            
+            // Find licenses expired for 24+ hours
+            const toPurge = window.allLicenses.filter(lic => {
+                if (!lic.expires_at || lic.expires_at <= 0) return false;
+                const expiredElapsed = now - lic.expires_at;
+                return expiredElapsed >= TWENTY_FOUR_HOURS_MS && !purgedKeyIds.has(lic.id);
+            });
+
+            if (toPurge.length === 0) return;
+
+            isPurgingExpired = true;
+            try {
+                console.log(`🧹 Auto-purging ${toPurge.length} license(s) expired for >24 hours...`);
+                // Batch delete (up to 450 per batch)
+                const batch = writeBatch(db);
+                const batchSlice = toPurge.slice(0, 450);
+                batchSlice.forEach(lic => {
+                    purgedKeyIds.add(lic.id);
+                    batch.delete(doc(db, "licenses", lic.id));
+                });
+                await batch.commit();
+
+                showToast(`🧹 <b>Auto-Cleanup:</b> Deleted <b>${batchSlice.length}</b> expired license(s) (>24h past expiration)`);
+                playBeep(450, 0.12);
+            } catch (err) {
+                console.error("Auto-purge error:", err);
+            } finally {
+                isPurgingExpired = false;
+            }
+        }
+
+        async function manualPurgeExpiredLicenses() {
+            const now = Date.now();
+            const toPurge = window.allLicenses.filter(lic => {
+                if (!lic.expires_at || lic.expires_at <= 0) return false;
+                return (now - lic.expires_at) >= TWENTY_FOUR_HOURS_MS;
+            });
+
+            if (toPurge.length === 0) {
+                alert("ℹ️ No licenses currently expired for >24 hours.\n\nNote: Keys remain in database for a 24-hour grace period after expiration, and are then automatically purged.");
+                return;
+            }
+
+            if (!confirm(`🧹 Found ${toPurge.length} license(s) that expired over 24 hours ago.\n\nDo you want to permanently delete them now?`)) {
+                return;
+            }
+
+            try {
+                const batch = writeBatch(db);
+                toPurge.slice(0, 450).forEach(lic => {
+                    batch.delete(doc(db, "licenses", lic.id));
+                });
+                await batch.commit();
+                showToast(`🧹 Successfully cleaned <b>${toPurge.length}</b> expired license(s) (>24h past expiry).`);
+                playBeep(500, 0.1);
+            } catch (err) {
+                alert("Error cleaning expired licenses: " + err.message);
+            }
+        }
+        window.manualPurgeExpiredLicenses = manualPurgeExpiredLicenses;
+
+        // ==========================================
         // DURATION & PREFIX CONTROLS
         // ==========================================
-        window.toggleCustomPrefix = function () {
+        function toggleCustomPrefix() {
             const sel = document.getElementById("prefixSelect").value;
             const input = document.getElementById("customPrefixInput");
             input.style.display = sel === "custom" ? "block" : "none";
             if (sel === "custom") input.focus();
-        };
+        }
+        window.toggleCustomPrefix = toggleCustomPrefix;
 
-        window.handleDurationChange = function () {
+        function handleDurationChange() {
             const sel = document.getElementById("durationSelect").value;
             const box = document.getElementById("customDurationBox");
             box.style.display = sel === "custom" ? "block" : "none";
@@ -1385,13 +1770,15 @@
             if (matchingChip) matchingChip.classList.add('active');
 
             updateDurationBadge();
-        };
+        }
+        window.handleDurationChange = handleDurationChange;
 
-        window.setQuickDuration = function (val) {
+        function setQuickDuration(val) {
             const select = document.getElementById("durationSelect");
             select.value = val.toString();
             handleDurationChange();
-        };
+        }
+        window.setQuickDuration = setQuickDuration;
 
         function updateDurationBadge() {
             const val = document.getElementById("durationSelect").value;
@@ -1409,12 +1796,90 @@
             }
         }
 
-        window.updateCustomDurationBadge = function() {
+        function updateCustomDurationBadge() {
             updateDurationBadge();
-        };
+        }
+        window.updateCustomDurationBadge = updateCustomDurationBadge;
 
         // ==========================================
-        // KEY GENERATOR LOGIC
+        // SINGLE & BULK GENERATOR MODES
+        // ==========================================
+        function switchGenMode(mode) {
+            window.currentGenMode = mode;
+            const tabSingle = document.getElementById("tabModeSingle");
+            const tabBulk = document.getElementById("tabModeBulk");
+            const singleClientGroup = document.getElementById("singleClientGroup");
+            const bulkBatchGroup = document.getElementById("bulkBatchGroup");
+            const bulkConfigBox = document.getElementById("bulkConfigBox");
+            const btnSingle = document.getElementById("btnGenKey");
+            const btnBulk = document.getElementById("btnGenBulk");
+            const title = document.getElementById("genCardTitle");
+
+            if (mode === 'bulk') {
+                tabSingle.classList.remove("active");
+                tabBulk.classList.add("active", "bulk-active");
+                singleClientGroup.style.display = "none";
+                bulkBatchGroup.style.display = "block";
+                bulkConfigBox.style.display = "block";
+                btnSingle.style.display = "none";
+                btnBulk.style.display = "flex";
+                title.textContent = "Bulk License Generator";
+                updateBulkButtonText();
+            } else {
+                tabBulk.classList.remove("active", "bulk-active");
+                tabSingle.classList.add("active");
+                singleClientGroup.style.display = "block";
+                bulkBatchGroup.style.display = "none";
+                bulkConfigBox.style.display = "none";
+                btnSingle.style.display = "flex";
+                btnBulk.style.display = "none";
+                title.textContent = "License Generator";
+            }
+        }
+        window.switchGenMode = switchGenMode;
+
+        function setBulkQuantity(qty) {
+            document.querySelectorAll('.bulk-qty-pill').forEach(p => p.classList.remove('active'));
+            const customBox = document.getElementById("bulkCustomCountBox");
+            const countInput = document.getElementById("bulkCountInput");
+
+            if (qty === 'custom') {
+                document.getElementById("pillCustom").classList.add('active');
+                customBox.style.display = "block";
+                countInput.focus();
+                window.selectedBulkQty = parseInt(countInput.value) || 20;
+            } else {
+                const targetPill = document.getElementById(`pill${qty}`);
+                if (targetPill) targetPill.classList.add('active');
+                customBox.style.display = "none";
+                countInput.value = qty;
+                window.selectedBulkQty = qty;
+            }
+            updateBulkButtonText();
+        }
+        window.setBulkQuantity = setBulkQuantity;
+
+        function handleBulkCountInput() {
+            const count = parseInt(document.getElementById("bulkCountInput").value) || 1;
+            window.selectedBulkQty = Math.max(1, Math.min(500, count));
+            updateBulkButtonText();
+        }
+        window.handleBulkCountInput = handleBulkCountInput;
+
+        function updateBulkButtonText() {
+            const qty = window.selectedBulkQty || 20;
+            const btnText = document.getElementById("btnBulkText");
+            if (btnText) {
+                btnText.textContent = `Generate ${qty} Keys in Bulk`;
+            }
+            const qtyLabel = document.getElementById("bulkQtyLabel");
+            if (qtyLabel) {
+                qtyLabel.textContent = `${qty} Keys selected`;
+            }
+        }
+
+        // ==========================================
+        // KEY GENERATOR CORE LOGIC
         // ==========================================
         function generateLicenseCode() {
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -1431,7 +1896,8 @@
             return `${cleanPrefix}META-${seg()}-${seg()}`;
         }
 
-        window.handleGenerateKey = async function () {
+        // --- SINGLE KEY GENERATION ---
+        async function handleGenerateKey() {
             const clientName = document.getElementById("clientNameInput").value.trim() || "Valued Client";
             let durationDays = 30;
             const durVal = document.getElementById("durationSelect").value;
@@ -1480,25 +1946,194 @@
                 btn.disabled = false;
                 btn.innerHTML = `<span>⚡</span><span>Generate & Activate Key</span>`;
             }
-        };
+        }
+        window.handleGenerateKey = handleGenerateKey;
 
-        window.copyGeneratedKey = function () {
+        // --- BULK KEYS GENERATION (20, 30, 50, etc) ---
+        async function handleGenerateBulkKeys() {
+            const count = parseInt(document.getElementById("bulkCountInput").value) || window.selectedBulkQty || 20;
+            if (count < 1 || count > 500) {
+                alert("Please select a quantity between 1 and 500 keys.");
+                return;
+            }
+
+            const batchTag = document.getElementById("bulkBatchTagInput").value.trim() || "Bulk Client";
+            let durationDays = 30;
+            const durVal = document.getElementById("durationSelect").value;
+            if (durVal === "custom") {
+                durationDays = parseFloat(document.getElementById("customDaysInput").value) || 30;
+            } else {
+                durationDays = parseFloat(durVal);
+            }
+            const isHwidLock = document.getElementById("hwidLockCheck").checked;
+
+            const btn = document.getElementById("btnGenBulk");
+            btn.disabled = true;
+            btn.innerHTML = `<span>⏳</span><span>Generating ${count} Keys & Syncing Cloud...</span>`;
+
+            const now = Date.now();
+            let expiresAt = 0;
+            if (durationDays > 0) {
+                expiresAt = now + (durationDays * 24 * 60 * 60 * 1000);
+            }
+
+            try {
+                const batch = writeBatch(db);
+                const generatedList = [];
+                const keysSet = new Set();
+
+                for (let i = 1; i <= count; i++) {
+                    let keyCode = generateLicenseCode();
+                    while (keysSet.has(keyCode)) {
+                        keyCode = generateLicenseCode();
+                    }
+                    keysSet.add(keyCode);
+
+                    const clientLabel = count > 1 ? `${batchTag} #${i}` : batchTag;
+                    const licData = {
+                        key: keyCode,
+                        client_name: clientLabel,
+                        duration_days: durationDays,
+                        created_at: now,
+                        expires_at: expiresAt,
+                        status: "active",
+                        device_lock: isHwidLock,
+                        bound_hwid: ""
+                    };
+                    batch.set(doc(db, "licenses", keyCode), licData);
+                    generatedList.push({
+                        key: keyCode,
+                        client: clientLabel,
+                        durationDays: durationDays,
+                        expiresAt: expiresAt
+                    });
+                }
+
+                // Atomic commit to Cloud Firestore
+                await batch.commit();
+
+                window.lastBulkGeneratedKeys = generatedList;
+
+                // Update Bulk Result Displays
+                const rawKeysText = generatedList.map(k => k.key).join("\n");
+                
+                // Update in-card view
+                document.getElementById("bulkCardSummaryTitle").textContent = `✅ ${count} Keys Generated in Bulk!`;
+                document.getElementById("bulkCardTextarea").value = rawKeysText;
+                document.getElementById("bulkResultCard").style.display = "block";
+
+                // Update modal view
+                document.getElementById("bulkModalTitle").textContent = `⚡ ${count} Keys Generated in Bulk!`;
+                document.getElementById("bulkModalCountLabel").textContent = `${count} keys ready`;
+                document.getElementById("btnCopyAllPlainLabel").textContent = `Copy All ${count} Keys`;
+                document.getElementById("bulkModalKeysTextarea").value = rawKeysText;
+
+                const durLabel = durationDays === -1 ? 'Lifetime' : `${durationDays} Days`;
+                const hwidLabel = isHwidLock ? '🔒 1-PC HWID Locked' : '🔓 Unlocked';
+                document.getElementById("bulkModalMeta").innerHTML = `
+                    <span>📦 <b>Count:</b> ${count} Keys</span> &bull;
+                    <span>⏱️ <b>Validity:</b> ${durLabel}</span> &bull;
+                    <span>🛡️ <b>Security:</b> ${hwidLabel}</span> &bull;
+                    <span>🏷️ <b>Tag:</b> ${batchTag}</span>
+                `;
+
+                openBulkModal();
+
+                playBeep(850, 0.2);
+                showToast(`🎉 <b>${count}</b> License Keys generated & saved to Cloud Firestore!`);
+            } catch (err) {
+                alert("Error saving bulk keys to Firebase:\n" + err.message + "\n\nMake sure Firestore Database is created in Firebase Console!");
+            } finally {
+                btn.disabled = false;
+                updateBulkButtonText();
+            }
+        }
+        window.handleGenerateBulkKeys = handleGenerateBulkKeys;
+
+        // ==========================================
+        // BULK MODAL & COPY TOOLS
+        // ==========================================
+        function openBulkModal() {
+            document.getElementById("bulkResultModal").style.display = "flex";
+        }
+        window.openBulkModal = openBulkModal;
+
+        function closeBulkModal() {
+            document.getElementById("bulkResultModal").style.display = "none";
+        }
+        window.closeBulkModal = closeBulkModal;
+
+        function copyBulkKeysPlain() {
+            if (!window.lastBulkGeneratedKeys || !window.lastBulkGeneratedKeys.length) return;
+            const plain = window.lastBulkGeneratedKeys.map(k => k.key).join("\n");
+            navigator.clipboard.writeText(plain);
+            playBeep(700, 0.06);
+            showToast(`📋 Copied all <b>${window.lastBulkGeneratedKeys.length}</b> keys to clipboard!`);
+        }
+        window.copyBulkKeysPlain = copyBulkKeysPlain;
+
+        function copyBulkKeysDetailed() {
+            if (!window.lastBulkGeneratedKeys || !window.lastBulkGeneratedKeys.length) return;
+            const detailed = window.lastBulkGeneratedKeys.map((k, idx) => {
+                const expStr = k.expiresAt > 0 ? new Date(k.expiresAt).toLocaleDateString() : 'Never (Lifetime)';
+                const durStr = k.durationDays === -1 ? 'Lifetime' : `${k.durationDays} Days`;
+                return `${idx + 1}. Key: ${k.key} | Client: ${k.client} | Duration: ${durStr} | Expiry: ${expStr}`;
+            }).join("\n");
+            navigator.clipboard.writeText(detailed);
+            playBeep(700, 0.06);
+            showToast(`📑 Copied detailed list of <b>${window.lastBulkGeneratedKeys.length}</b> keys!`);
+        }
+        window.copyBulkKeysDetailed = copyBulkKeysDetailed;
+
+        function downloadBulkKeysTxt() {
+            if (!window.lastBulkGeneratedKeys || !window.lastBulkGeneratedKeys.length) return;
+            const count = window.lastBulkGeneratedKeys.length;
+            let content = `META AI AUTOMATION STUDIO - BULK LICENSE KEYS (${count} KEYS)\n`;
+            content += `Generated At: ${new Date().toLocaleString()}\n`;
+            content += `============================================================\n\n`;
+            content += `[ RAW KEYS - 1 PER LINE ]\n`;
+            content += window.lastBulkGeneratedKeys.map(k => k.key).join("\n");
+            content += `\n\n============================================================\n`;
+            content += `[ DETAILED LIST ]\n`;
+            content += window.lastBulkGeneratedKeys.map((k, idx) => {
+                const expStr = k.expiresAt > 0 ? new Date(k.expiresAt).toLocaleDateString() : 'Lifetime';
+                const durStr = k.durationDays === -1 ? 'Lifetime' : `${k.durationDays} Days`;
+                return `${idx + 1}. Key: ${k.key}\n   Client: ${k.client}\n   Duration: ${durStr}\n   Expires: ${expStr}\n`;
+            }).join("\n");
+
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `meta_ai_keys_batch_${count}_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(`💾 Downloaded ${count} license keys as .TXT file!`);
+        }
+        window.downloadBulkKeysTxt = downloadBulkKeysTxt;
+
+        // ==========================================
+        // COPY TOOLS (SINGLE & TABLE)
+        // ==========================================
+        function copyGeneratedKey() {
             const text = document.getElementById("displayKeyCode").textContent;
             navigator.clipboard.writeText(text);
             playBeep(700, 0.05);
             showToast(`📋 Copied generated key to clipboard:<br><code>${text}</code>`);
-        };
+        }
+        window.copyGeneratedKey = copyGeneratedKey;
 
-        window.copyTableKey = function (key) {
+        function copyTableKey(key) {
             navigator.clipboard.writeText(key);
             playBeep(700, 0.05);
             showToast(`📋 Copied license key:<br><code>${key}</code>`);
-        };
+        }
+        window.copyTableKey = copyTableKey;
 
         // ==========================================
         // ACTIONS: BLOCK / RESET / EXTEND / DELETE
         // ==========================================
-        window.toggleRevoke = async function (keyId, currentStatus) {
+        async function toggleRevoke(keyId, currentStatus) {
             const newStatus = currentStatus === "active" ? "revoked" : "active";
             const confirmMsg = newStatus === "revoked" 
                 ? `Are you sure you want to BLOCK / REVOKE license:\n${keyId}?` 
@@ -1511,9 +2146,10 @@
             } catch (e) {
                 alert("Error updating status: " + e.message);
             }
-        };
+        }
+        window.toggleRevoke = toggleRevoke;
 
-        window.resetHwid = async function (keyId) {
+        async function resetHwid(keyId) {
             if (!confirm(`Are you sure you want to RESET/UNBIND the device HWID lock for:\n${keyId}?\n\nThis will allow the client to activate on a new computer!`)) return;
             try {
                 await updateDoc(doc(db, "licenses", keyId), { bound_hwid: "" });
@@ -1522,9 +2158,10 @@
             } catch (e) {
                 alert("Error resetting HWID: " + e.message);
             }
-        };
+        }
+        window.resetHwid = resetHwid;
 
-        window.extendLicense = async function (keyId, daysToAdd) {
+        async function extendLicense(keyId, daysToAdd) {
             const lic = window.allLicenses.find(l => l.id === keyId);
             if (!lic) return;
             const now = Date.now();
@@ -1537,9 +2174,10 @@
             } catch (e) {
                 alert("Error extending key: " + e.message);
             }
-        };
+        }
+        window.extendLicense = extendLicense;
 
-        window.deleteLicense = async function (keyId) {
+        async function deleteLicense(keyId) {
             if (!confirm(`⚠️ Permanently DELETE license key:\n${keyId}?\n\nThis action cannot be undone.`)) return;
             try {
                 await deleteDoc(doc(db, "licenses", keyId));
@@ -1547,12 +2185,13 @@
             } catch (e) {
                 alert("Error deleting key: " + e.message);
             }
-        };
+        }
+        window.deleteLicense = deleteLicense;
 
         // ==========================================
         // FILTER & RENDER TABLE
         // ==========================================
-        window.setFilter = function (filterName) {
+        function setFilter(filterName) {
             window.currentFilter = filterName;
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 if (tab.getAttribute('data-filter') === filterName) {
@@ -1562,9 +2201,10 @@
                 }
             });
             renderTable();
-        };
+        }
+        window.setFilter = setFilter;
 
-        window.renderTable = function () {
+        function renderTable() {
             const search = (document.getElementById("searchInput").value || "").toLowerCase();
             const tbody = document.getElementById("licenseTableBody");
             const now = Date.now();
@@ -1607,7 +2247,13 @@
                 if (lic.status === "revoked") {
                     statusBadge = `<span class="badge badge-revoked">🚫 Revoked</span>`;
                 } else if (isExpired) {
-                    statusBadge = `<span class="badge badge-expired">⏳ Expired</span>`;
+                    const elapsedMs = now - lic.expires_at;
+                    if (elapsedMs >= TWENTY_FOUR_HOURS_MS) {
+                        statusBadge = `<span class="badge badge-expired" style="background: rgba(239, 68, 68, 0.25); color: #f87171; border-color: rgba(239, 68, 68, 0.45);" title="Expired over 24 hours ago. Automatic deletion in progress.">⏳ Auto-Purging (>24h)</span>`;
+                    } else {
+                        const hoursLeft = Math.max(1, Math.ceil((TWENTY_FOUR_HOURS_MS - elapsedMs) / (1000 * 60 * 60)));
+                        statusBadge = `<span class="badge badge-expired" title="Expired. Will auto-delete from database in ${hoursLeft} hours if not renewed.">⏳ Expired (Deletes in ${hoursLeft}h)</span>`;
+                    }
                 }
 
                 // Expiry string
@@ -1619,7 +2265,10 @@
                     if (diffDays > 0) {
                         expiryStr = `<span>${expDate} <small style="color:#34d399;">(${diffDays}d left)</small></span>`;
                     } else {
-                        expiryStr = `<span style="color: #f87171;">${expDate} <small>(Expired)</small></span>`;
+                        const elapsedMs = now - lic.expires_at;
+                        const hoursAgo = Math.floor(elapsedMs / (1000 * 60 * 60));
+                        const timeAgoText = hoursAgo >= 24 ? `${Math.floor(hoursAgo / 24)}d ${hoursAgo % 24}h ago` : (hoursAgo > 0 ? `${hoursAgo}h ago` : 'Just now');
+                        expiryStr = `<span style="color: #f87171;">${expDate} <small title="Expired ${timeAgoText}">(${timeAgoText})</small></span>`;
                     }
                 }
 
@@ -1676,20 +2325,24 @@
                     </tr>
                 `;
             }).join("");
-        };
+        }
+        window.renderTable = renderTable;
 
         // ==========================================
         // STATS & BADGE COUNTERS
         // ==========================================
         function updateStats() {
             const now = Date.now();
-            let active = 0, expired = 0, revoked = 0;
+            let active = 0, expired = 0, revoked = 0, purgeEligible = 0;
             
             window.allLicenses.forEach(l => {
                 if (l.status === "revoked") {
                     revoked++;
                 } else if (l.expires_at > 0 && now > l.expires_at) {
                     expired++;
+                    if ((now - l.expires_at) >= TWENTY_FOUR_HOURS_MS) {
+                        purgeEligible++;
+                    }
                 } else {
                     active++;
                 }
@@ -1705,12 +2358,17 @@
             document.getElementById("badgeActive").textContent = active;
             document.getElementById("badgeExpired").textContent = expired;
             document.getElementById("badgeRevoked").textContent = revoked;
+
+            // Update Purge eligible badge in toolbar
+            const purgeBadge = document.getElementById("badgePurgeEligible");
+            if (purgeBadge) purgeBadge.textContent = purgeEligible;
         }
+        window.updateStats = updateStats;
 
         // ==========================================
         // EXPORT & BATCH TOOLS
         // ==========================================
-        window.exportLicensesCSV = function () {
+        function exportLicensesCSV() {
             if (!window.allLicenses.length) {
                 alert("No licenses available to export!");
                 return;
@@ -1730,17 +2388,36 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast("📥 Exported licenses to CSV file!");
-        };
+        }
+        window.exportLicensesCSV = exportLicensesCSV;
 
-        window.copyAllKeys = function () {
-            if (!window.allLicenses.length) {
-                alert("No license keys found!");
+        function copyAllKeys() {
+            const search = (document.getElementById("searchInput").value || "").toLowerCase();
+            const now = Date.now();
+
+            // Filter keys by currently active search and tab
+            const visible = window.allLicenses.filter(lic => {
+                const isExpired = lic.expires_at > 0 && now > lic.expires_at;
+                const effectiveStatus = lic.status === 'revoked' ? 'revoked' : (isExpired ? 'expired' : 'active');
+                if (window.currentFilter !== 'all' && effectiveStatus !== window.currentFilter) return false;
+                return (
+                    (lic.key || "").toLowerCase().includes(search) ||
+                    (lic.client_name || "").toLowerCase().includes(search) ||
+                    (lic.status || "").toLowerCase().includes(search) ||
+                    (lic.bound_hwid || "").toLowerCase().includes(search)
+                );
+            });
+
+            if (!visible.length) {
+                alert("No license keys found to copy!");
                 return;
             }
-            const keys = window.allLicenses.map(l => l.key).join("\n");
+            const keys = visible.map(l => l.key).join("\n");
             navigator.clipboard.writeText(keys);
-            showToast(`📋 Copied all <b>${window.allLicenses.length}</b> license keys to clipboard!`);
-        };
+            playBeep(700, 0.05);
+            showToast(`📋 Copied <b>${visible.length}</b> license key(s) to clipboard!`);
+        }
+        window.copyAllKeys = copyAllKeys;
 
         // Toast Notification System
         function showToast(msg) {
